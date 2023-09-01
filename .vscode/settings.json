@@ -93,7 +93,5 @@
       "lineLength": 80
     }
   ],
-  "cSpell.words": [
-    "appsec"
-  ],
+  "cSpell.words": ["appsec", "PKCS"]
 }

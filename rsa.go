@@ -5,7 +5,7 @@
  * Author: Sallehuddin Abdul Latif (sallehuddin@berrypay.com)
  * Company: BerryPay (M) Sdn. Bhd.
  * --------------------------------------
- * Last Modified: Friday September 1st 2023 16:07:52 +0800
+ * Last Modified: Friday September 1st 2023 16:28:37 +0800
  * Modified By: Sallehuddin Abdul Latif (sallehuddin@berrypay.com)
  * --------------------------------------
  * Copyright (c) 2023 BerryPay (M) Sdn. Bhd.
@@ -29,7 +29,7 @@ import (
 var AppPublicKey *rsa.PublicKey
 var AppPrivateKey *rsa.PrivateKey
 
-// LoadPrivateKey loads the public key from the given PEM certificate file
+// LoadPrivateKey loads the public key from the given PKCS8 PEM encoded key file
 //
 // If the argument path is empty, the default app.key file on the same directory of executable is assumed to be used
 func LoadPrivateKey(path string) error {
@@ -70,10 +70,11 @@ func LoadPrivateKey(path string) error {
 		return err
 	}
 
-	var parsingOk bool
-	AppPrivateKey, parsingOk = parsedKey.(*rsa.PrivateKey)
-	if !parsingOk {
-		return fmt.Errorf("not a parsable RSA private key")
+	switch t := parsedKey.(type) {
+	case *rsa.PrivateKey:
+		AppPrivateKey = t
+	default:
+		return fmt.Errorf("not a RSA private key")
 	}
 
 	if err = AppPrivateKey.Validate(); err != nil {
