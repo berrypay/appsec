@@ -5,7 +5,7 @@
  * Author: Sallehuddin Abdul Latif (sallehuddin@berrypay.com)
  * Company: BerryPay (M) Sdn. Bhd.
  * --------------------------------------
- * Last Modified: Friday September 1st 2023 14:33:15 +0800
+ * Last Modified: Friday September 1st 2023 15:39:43 +0800
  * Modified By: Sallehuddin Abdul Latif (sallehuddin@berrypay.com)
  * --------------------------------------
  * Copyright (c) 2023 BerryPay (M) Sdn. Bhd.
@@ -21,6 +21,7 @@ import (
 	"crypto/x509"
 	"encoding/base64"
 	"encoding/pem"
+	"fmt"
 	"os"
 	"path/filepath"
 )
@@ -145,6 +146,11 @@ func EncryptOAEP(secret string, label string) (string, error) {
 //
 // The label parameter must match the value given when encrypting
 func DecryptOAEP(cipher string, label string) (string, error) {
+
+	if AppPrivateKey == nil {
+		return "", fmt.Errorf("AppPrivateKey is not loaded")
+	}
+
 	cipherText, err := base64.StdEncoding.DecodeString(cipher)
 	if err != nil {
 		return "", err
