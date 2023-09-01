@@ -5,7 +5,7 @@
  * Author: Sallehuddin Abdul Latif (sallehuddin@berrypay.com)
  * Company: BerryPay (M) Sdn. Bhd.
  * --------------------------------------
- * Last Modified: Friday September 1st 2023 15:39:43 +0800
+ * Last Modified: Friday September 1st 2023 16:07:52 +0800
  * Modified By: Sallehuddin Abdul Latif (sallehuddin@berrypay.com)
  * --------------------------------------
  * Copyright (c) 2023 BerryPay (M) Sdn. Bhd.
@@ -65,9 +65,15 @@ func LoadPrivateKey(path string) error {
 	pemBlock, _ := pem.Decode([]byte(pemFileBytes))
 	privateKeyFile.Close()
 
-	AppPrivateKey, err = x509.ParsePKCS1PrivateKey(pemBlock.Bytes)
+	parsedKey, err := x509.ParsePKCS8PrivateKey(pemBlock.Bytes)
 	if err != nil {
 		return err
+	}
+
+	var parsingOk bool
+	AppPrivateKey, parsingOk = parsedKey.(*rsa.PrivateKey)
+	if !parsingOk {
+		return fmt.Errorf("not a parsable RSA private key")
 	}
 
 	if err = AppPrivateKey.Validate(); err != nil {
