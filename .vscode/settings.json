@@ -30,7 +30,8 @@
       "./Dockerfile",
       "./.gitlab-ci.yml",
       "./netrc",
-      "./certs/*"
+      "./certs/*",
+      "./LICENSE"
     ],
     "autoHeader": "autoSave",
     "enforceHeader": true,
