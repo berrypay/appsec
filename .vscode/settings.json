@@ -93,5 +93,5 @@
       "lineLength": 80
     }
   ],
-  "cSpell.words": ["appsec", "PKCS"]
+  "cSpell.words": ["AESGCM", "appsec", "PKCS"]
 }
